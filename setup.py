@@ -23,7 +23,7 @@ dependencies: list = ["wheel"]
 
 setup(
     name=name,
-    version="1.0.0",
+    version="1.0.1",
     description=description,
     url="https://github.com/cloudstrife9999/pyjoptional",
     author=author,
