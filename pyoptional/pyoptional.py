@@ -3,6 +3,7 @@ from typing import Generic, TypeVar, Optional as Opt, Callable, Any, Type
 
 
 T = TypeVar("T")
+R = TypeVar("R")
 
 
 class PyOptional(Generic[T]):
@@ -22,7 +23,7 @@ class PyOptional(Generic[T]):
             self.__val: Opt[T] = val
 
     @classmethod
-    def empty(cls: Type[PyOptional[T]]) -> PyOptional[T]:
+    def empty(cls: Type[PyOptional[T]]) -> PyOptional[Any]:
         '''
         Returns an empty `PyOptional` instance.
 
@@ -84,18 +85,20 @@ class PyOptional(Generic[T]):
         else:
             empty_fn()
 
-    def filter(self, fn: Callable) -> PyOptional[T]:
+    def filter(self, fn: Callable[[T], bool]) -> PyOptional[T]:
         '''
         If a value is present, and the value matches the given predicate, returns a `PyOptional` describing the value, otherwise returns an empty `PyOptional`.
         '''
-        if self.is_present() and fn(self.__val):
-            return self
+        if self.is_present():
+            assert self.__val is not None
+
+            return self if fn(self.__val) else PyOptional.empty()
         else:
             return PyOptional.empty()
 
-    def map(self, fn: Callable[[T], Any]) -> PyOptional:
+    def map(self, fn: Callable[[T], R]) -> PyOptional[R]:
         '''
-        If a value is present, returns a `PyOptional` describing (as if by ofNullable(T)) the result of applying the given mapping function (i.e., `fn`) to the value, otherwise returns an empty `PyOptional`.
+        If a value is present, returns a `PyOptional` describing (as if by `of_nullable(T)`) the result of applying the given mapping function (i.e., `fn`) to the value, otherwise returns an empty `PyOptional`.
         '''
         if self.is_present():
             assert self.__val is not None
@@ -104,7 +107,7 @@ class PyOptional(Generic[T]):
         else:
             return PyOptional.empty()
 
-    def flat_map(self, fn: Callable[[T], Any]) -> PyOptional:
+    def flat_map(self, fn: Callable[[T], R]) -> PyOptional[R]:
         '''
         If a value is present, returns the result of applying the given `PyOptional`-bearing mapping function (i.e., `fn`) to the value, otherwise returns an empty `PyOptional`.
 
