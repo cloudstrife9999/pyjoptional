@@ -25,6 +25,7 @@ setup(
     name=name,
     version="1.0.0",
     description=description,
+    url="https://github.com/cloudstrife9999/pyjoptional",
     author=author,
     license=license,
     packages=find_packages(),
