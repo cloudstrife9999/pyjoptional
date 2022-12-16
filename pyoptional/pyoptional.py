@@ -64,18 +64,22 @@ class PyOptional(Generic[T]):
         '''
         return self.__val is not None
 
-    def if_present(self, fn: Callable) -> None:
+    def if_present(self, fn: Callable[[T], Any]) -> None:
         '''
         If a value is present, performs the given action (i.e., applies `fn`) with the value, otherwise does nothing.
         '''
         if self.is_present():
+            assert self.__val is not None
+
             fn(self.__val)
 
-    def if_present_or_else(self, fn: Callable, empty_fn: Callable) -> None:
+    def if_present_or_else(self, fn: Callable[[T], Any], empty_fn: Callable) -> None:
         '''
         If a value is present, performs the given action (i.e., applies `fn`) with the value, otherwise does nothing.
         '''
         if self.is_present():
+            assert self.__val is not None
+
             fn(self.__val)
         else:
             empty_fn()
@@ -89,16 +93,18 @@ class PyOptional(Generic[T]):
         else:
             return PyOptional.empty()
 
-    def map(self, fn: Callable) -> PyOptional:
+    def map(self, fn: Callable[[T], Any]) -> PyOptional:
         '''
-        If a value is present, returns a ``PyOptional` describing (as if by ofNullable(T)) the result of applying the given mapping function (i.e., `fn`) to the value, otherwise returns an empty `PyOptional`.
+        If a value is present, returns a `PyOptional` describing (as if by ofNullable(T)) the result of applying the given mapping function (i.e., `fn`) to the value, otherwise returns an empty `PyOptional`.
         '''
         if self.is_present():
+            assert self.__val is not None
+
             return PyOptional.of_nullable(fn(self.__val))
         else:
             return PyOptional.empty()
 
-    def flat_map(self, fn: Callable) -> PyOptional:
+    def flat_map(self, fn: Callable[[T], Any]) -> PyOptional:
         '''
         If a value is present, returns the result of applying the given `PyOptional`-bearing mapping function (i.e., `fn`) to the value, otherwise returns an empty `PyOptional`.
 
@@ -107,6 +113,8 @@ class PyOptional(Generic[T]):
         if self.is_empty():
             return PyOptional.empty()
         else:
+            assert self.__val is not None
+
             to_return: Any = fn(self.__val)
 
             return to_return if to_return is not None and isinstance(to_return, PyOptional) else PyOptional.of_nullable(to_return)
@@ -135,7 +143,7 @@ class PyOptional(Generic[T]):
         else:
             return default
 
-    def or_else_get(self, fn: Callable) -> T:
+    def or_else_get(self, fn: Callable[[], T]) -> T:
         '''
         If a value is present, returns the value, otherwise returns the result produced by the supplying function (i.e., `fn`).
 
@@ -162,7 +170,7 @@ class PyOptional(Generic[T]):
     or_else_throw = or_else_raise
     '''Convenient alias for `or_else_raise`.'''
 
-    def or_new_pyoptional(self, fn: Callable) -> PyOptional[T]:
+    def or_new_pyoptional(self, fn: Callable[[], PyOptional[T]]) -> PyOptional[T]:
         '''
         If a value is present, returns a `PyOptional` describing the value, otherwise returns a `PyOptional` produced by the supplying function (i.e, `fn`).
         '''
