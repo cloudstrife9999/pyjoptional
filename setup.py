@@ -3,6 +3,9 @@ from setuptools import setup, find_packages
 
 # All reusable metadata should go here.
 
+with open("README.md") as f:
+    long_description = f.read()
+
 name: str = "pyjoptional"
 description: str = "A Python module providing `PyOptional`, a Java-like `Optional` type for Python 3.8+."
 author: str = "Emanuele Uliana"
@@ -23,8 +26,10 @@ dependencies: list = ["wheel"]
 
 setup(
     name=name,
-    version="1.0.1",
+    version="1.0.2",
     description=description,
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     url="https://github.com/cloudstrife9999/pyjoptional",
     author=author,
     license=license,
