@@ -1,6 +1,5 @@
 from __future__ import annotations
-from typing import Generic, TypeVar, Optional as Opt, Callable, Any, Type, List
-from inspect import isfunction, getfullargspec, signature
+from typing import Generic, TypeVar, Optional as Opt, Callable, Any, Type
 
 
 T = TypeVar("T")
@@ -10,7 +9,7 @@ class PyOptional(Generic[T]):
     '''
     A container object which may or may not contain a non-`None` value. If a value is present, `is_present()` returns `True`. If no value is present, the object is considered empty and `is_present()` returns `False`.
 
-    Additional methods that depend on the presence or absence of a contained value are provided, such as `or_else()` (returns a default value if no value is present) and `if_present()` (performs an action if a value is present). 
+    Additional methods that depend on the presence or absence of a contained value are provided, such as `or_else()` (returns a default value if no value is present) and `if_present()` (performs an action if a value is present).
     '''
     __CREATE_KEY: Any = object()
 
@@ -171,7 +170,7 @@ class PyOptional(Generic[T]):
             return PyOptional.of_nullable(self.get())
         else:
             return fn()
-        
+
     def __eq__(self, o: Any) -> bool:
         '''
         Returns `True` if `o` is equal to this `PyOptional`, `False` otherwise.
