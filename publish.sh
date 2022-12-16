@@ -1,4 +1,4 @@
 #!/bin/bash
 
 /usr/bin/env python setup.py sdist bdist_wheel
-/usr/bin/env python -m twine upload dist/* -r pyoptional --skip-existing
+/usr/bin/env python -m twine upload dist/* -r pyjoptional --skip-existing

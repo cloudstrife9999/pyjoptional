@@ -3,12 +3,13 @@ from setuptools import setup, find_packages
 
 # All reusable metadata should go here.
 
-name: str = "pyoptional"
-description: str = "Java-like Optional type for Python 3.9+"
+name: str = "pyjoptional"
+description: str = "A Python module providing `PyOptional`, a Java-like `Optional` type for Python 3.8+."
 author: str = "Emanuele Uliana"
 license: str = "GNU3"
 classifiers: list = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3 :: Only",
