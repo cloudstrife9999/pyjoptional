@@ -14,7 +14,7 @@ class PyOptional(Generic[T]):
     '''
     __CREATE_KEY: Any = object()
 
-    def __init__(self, key: Any, val: T) -> None:
+    def __init__(self, key: Any, val: Opt[T]=None) -> None:
         if key != PyOptional.__CREATE_KEY:
             raise TypeError("Cannot instantiate a `PyOptional` object. Use `PyOptional.empty()`, `PyOptional.of()`, or `PyOptional.of_nullable()` instead.")
         else:
@@ -29,7 +29,7 @@ class PyOptional(Generic[T]):
 
         There is no guarantee that a call to `PyOptional.empty()` will return a new instance or the same instance each time.
         '''
-        return PyOptional[T](cls.__CREATE_KEY, None)
+        return PyOptional[T](cls.__CREATE_KEY)
 
     @classmethod
     def of(cls: Type[PyOptional[T]], val: T) -> PyOptional[T]:
@@ -76,7 +76,7 @@ class PyOptional(Generic[T]):
 
     def if_present_or_else(self, fn: Callable[[T], Any], empty_fn: Callable) -> None:
         '''
-        If a value is present, performs the given action (i.e., applies `fn`) with the value, otherwise does nothing.
+        If a value is present, calls `fn` with the value as argument, otherwise calls `empty_fn` with no arguments.
         '''
         if self.is_present():
             assert self.__val is not None
