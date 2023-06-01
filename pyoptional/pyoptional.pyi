@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Generic, TypeVar, Optional as Opt, Callable, Any, Type
+from typing import Generic, TypeVar, Optional as Opt, Callable, Any, Type, cast
 
 
 T = TypeVar("T")
@@ -23,11 +23,16 @@ class PyOptional(Generic[T]):
             self.__val: Opt[T] = val
 
     @classmethod
-    def empty(cls: Type[PyOptional[T]]) -> PyOptional[Any]:
+    def empty(cls: Type[PyOptional[T]]) -> PyOptional[T]:
         '''
         Returns an empty `PyOptional` instance.
 
         There is no guarantee that a call to `PyOptional.empty()` will return a new instance or the same instance each time.
+
+        Parameters:
+            `cls: (Type[PyOptional[T]])`: The type of the non-existent value.
+        Returns:
+            An empty `PyOptional[T]`.
         '''
         return PyOptional[T](cls.__CREATE_KEY)
 
@@ -105,7 +110,7 @@ class PyOptional(Generic[T]):
 
             return PyOptional.of_nullable(fn(self.__val))
         else:
-            return PyOptional.empty()
+            return PyOptional[R].empty()
 
     def flat_map(self, fn: Callable[[T], R]) -> PyOptional[R]:
         '''
@@ -114,7 +119,7 @@ class PyOptional(Generic[T]):
         In practice, this method does not wrap the result of the mapping function in an `PyOptional` instance if such result is already a `PyOptional`.
         '''
         if self.is_empty():
-            return PyOptional.empty()
+            return PyOptional[R].empty()
         else:
             assert self.__val is not None
 
@@ -162,7 +167,7 @@ class PyOptional(Generic[T]):
         If a value is present, returns the value, otherwise raises the exception provided (i.e., `exception`) or `ValueError` if no `exception` is provided (or is `None`).
         '''
         if self.is_empty() and exception is not None and isinstance(exception, Exception):
-            raise exception
+            raise cast(Exception, exception)
         elif self.is_empty() and exception is not None:
             raise TypeError("Cannot raise a non-`Exception` object.")
         elif self.is_empty():
