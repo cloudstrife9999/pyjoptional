@@ -79,7 +79,7 @@ class PyOptional(Generic[T]):
 
             fn(self.__val)
 
-    def if_present_or_else(self, fn: Callable[[T], Any], empty_fn: Callable) -> None:
+    def if_present_or_else(self, fn: Callable[[T], Any], empty_fn: Callable[[], None]) -> None:
         '''
         If a value is present, calls `fn` with the value as argument, otherwise calls `empty_fn` with no arguments.
         '''
@@ -125,7 +125,7 @@ class PyOptional(Generic[T]):
 
             to_return: Any = fn(self.__val)
 
-            return to_return if to_return is not None and isinstance(to_return, PyOptional) else PyOptional.of_nullable(to_return)
+            return cast(PyOptional[R], to_return) if to_return is not None and isinstance(to_return, PyOptional) else PyOptional.of_nullable(to_return)
 
     def get(self) -> T:
         '''
@@ -167,7 +167,7 @@ class PyOptional(Generic[T]):
         If a value is present, returns the value, otherwise raises the exception provided (i.e., `exception`) or `ValueError` if no `exception` is provided (or is `None`).
         '''
         if self.is_empty() and exception is not None and isinstance(exception, Exception):
-            raise cast(Exception, exception)
+            raise exception
         elif self.is_empty() and exception is not None:
             raise TypeError("Cannot raise a non-`Exception` object.")
         elif self.is_empty():
@@ -198,7 +198,7 @@ class PyOptional(Generic[T]):
         elif not isinstance(o, PyOptional):
             return False
         else:
-            return self.is_empty() and o.is_empty() or self.is_present() and o.is_present() and self.__val == o.or_else_raise()
+            return self.is_empty() and o.is_empty() or self.is_present() and o.is_present() and self.__val == cast(T, o.or_else_raise())
 
     def __hash__(self) -> int:
         '''

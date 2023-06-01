@@ -10,7 +10,7 @@ name: str = "pyjoptional"
 description: str = "A Python module providing `PyOptional`, a Java-like `Optional` type for Python 3.8+."
 author: str = "Emanuele Uliana"
 license: str = "GNU3"
-classifiers: list = [
+classifiers: list[str] = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -20,13 +20,13 @@ classifiers: list = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
 ]
-dependencies: list = ["wheel"]
+dependencies: list[str] = ["wheel"]
 
 # End of metadata
 
 setup(
     name=name,
-    version="1.0.7",
+    version="1.0.8",
     description=description,
     long_description=long_description,
     long_description_content_type="text/markdown",

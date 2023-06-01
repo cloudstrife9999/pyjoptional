@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Generic, TypeVar, Optional as Opt, Callable, Any, Type, cast
+from typing import Generic, TypeVar, Optional as Opt, Callable, Any, Type
 
 
 T = TypeVar("T")
@@ -12,15 +12,8 @@ class PyOptional(Generic[T]):
 
     Additional methods that depend on the presence or absence of a contained value are provided, such as `or_else()` (returns a default value if no value is present) and `if_present()` (performs an action if a value is present).
     '''
-    __CREATE_KEY: Any = object()
-
     def __init__(self, key: Any, val: Opt[T]=None) -> None:
-        if key != PyOptional.__CREATE_KEY:
-            raise TypeError("Cannot instantiate a `PyOptional` object. Use `PyOptional.empty()`, `PyOptional.of()`, or `PyOptional.of_nullable()` instead.")
-        else:
-            super().__init__()
-
-            self.__val: Opt[T] = val
+        ...
 
     @classmethod
     def empty(cls: Type[PyOptional[T]]) -> PyOptional[T]:
