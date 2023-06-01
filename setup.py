@@ -26,7 +26,7 @@ dependencies: list[str] = ["wheel"]
 
 setup(
     name=name,
-    version="1.0.8",
+    version="1.0.9",
     description=description,
     long_description=long_description,
     long_description_content_type="text/markdown",

@@ -63,7 +63,7 @@ class PyOptional(Generic[T]):
         '''
         ...
 
-    def if_present_or_else(self, fn: Callable[[T], Any], empty_fn: Callable) -> None:
+    def if_present_or_else(self, fn: Callable[[T], Any], empty_fn: Callable[[], None]) -> None:
         '''
         If a value is present, calls `fn` with the value as argument, otherwise calls `empty_fn` with no arguments.
         '''
