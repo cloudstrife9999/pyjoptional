@@ -3,11 +3,11 @@ from setuptools import setup, find_packages
 
 # All reusable metadata should go here.
 
-with open("README.md") as f:
+with open("README.md", "r") as f:
     long_description = f.read()
 
 name: str = "pyjoptional"
-description: str = "A Python module providing `PyOptional`, a Java-like `Optional` type for Python 3.8+."
+description: str = "A Python module providing `PyOptional`, a Java-like `Optional` type for Python 3.9+."
 author: str = "Emanuele Uliana"
 license: str = "GNU3"
 classifiers: list[str] = [
@@ -26,7 +26,7 @@ dependencies: list[str] = ["wheel"]
 
 setup(
     name=name,
-    version="1.0.9",
+    version="1.1.1",
     description=description,
     long_description=long_description,
     long_description_content_type="text/markdown",

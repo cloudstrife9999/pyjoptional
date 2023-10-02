@@ -162,7 +162,7 @@ class PyOptional(Generic[T]):
         else:
             return fn()
 
-    def or_else_raise(self, exception: Opt[Exception]=None) -> T:
+    def or_else_raise(self, exception: Opt[Exception | Any]=None) -> T:
         '''
         If a value is present, returns the value, otherwise raises the exception provided (i.e., `exception`) or `ValueError` if no `exception` is provided (or is `None`).
         '''
